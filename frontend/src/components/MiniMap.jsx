@@ -6,10 +6,11 @@ export function MiniMap({ latitude, longitude }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
+  const initializedRef = useRef(false);
   const { isLoaded, error } = useKakaoMaps();
 
   useEffect(() => {
-    if (!isLoaded || !mapRef.current) return;
+    if (!isLoaded || !mapRef.current || initializedRef.current) return;
 
     const container = mapRef.current;
     const options = {
@@ -23,10 +24,12 @@ export function MiniMap({ latitude, longitude }) {
       position: new window.kakao.maps.LatLng(latitude, longitude),
       map: mapInstanceRef.current,
     });
-  }, [isLoaded]);
+
+    initializedRef.current = true;
+  }, [isLoaded, latitude, longitude]);
 
   useEffect(() => {
-    if (mapInstanceRef.current && markerRef.current) {
+    if (mapInstanceRef.current && markerRef.current && initializedRef.current) {
       const newPosition = new window.kakao.maps.LatLng(latitude, longitude);
       mapInstanceRef.current.setCenter(newPosition);
       markerRef.current.setPosition(newPosition);
