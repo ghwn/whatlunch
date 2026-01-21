@@ -1,0 +1,32 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.settings {
+  flex: 1;
+  padding: 0 1rem;
+}
+
+.recommend-button {
+  width: 100%;
+  padding: 1rem;
+  background: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: auto;
+}
+
+.recommend-button:hover {
+  background: #e55a2b;
+}
+
+.recommend-button:active {
+  transform: scale(0.98);
+}

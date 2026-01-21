@@ -1,35 +1,112 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useCallback } from 'react';
+import { useGeolocation } from './hooks/useGeolocation';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { searchRestaurants, getRandomRestaurants } from './api/kakaoLocal';
+import { Dashboard, Results, Loading } from './components';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { location, error: locationError, loading: locationLoading } = useGeolocation();
+  const [radius, setRadius] = useLocalStorage('whatlunch_radius', 500);
+  const [count, setCount] = useLocalStorage('whatlunch_count', 3);
+
+  const [view, setView] = useState('dashboard'); // 'dashboard' | 'loading' | 'results'
+  const [restaurants, setRestaurants] = useState([]);
+  const [error, setError] = useState(null);
+
+  const handleRecommend = useCallback(async () => {
+    if (!location) return;
+
+    setView('loading');
+    setError(null);
+
+    try {
+      const allRestaurants = await searchRestaurants(
+        location.longitude,
+        location.latitude,
+        radius
+      );
+
+      if (allRestaurants.length === 0) {
+        setError('주변에 음식점이 없습니다. 거리를 늘려보세요.');
+        setView('dashboard');
+        return;
+      }
+
+      const selected = getRandomRestaurants(allRestaurants, count);
+      setRestaurants(selected);
+      setView('results');
+    } catch (err) {
+      console.error('Failed to fetch restaurants:', err);
+      setError('음식점을 불러오는데 실패했습니다. 다시 시도해주세요.');
+      setView('dashboard');
+    }
+  }, [location, radius, count]);
+
+  const handleBack = useCallback(() => {
+    setView('dashboard');
+  }, []);
+
+  if (locationLoading) {
+    return (
+      <div className="app">
+        <div className="app-container">
+          <h1 className="app-title">WhatLunch</h1>
+          <Loading />
+          <p className="status-text">위치를 확인하는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (locationError) {
+    return (
+      <div className="app">
+        <div className="app-container">
+          <h1 className="app-title">WhatLunch</h1>
+          <div className="error-container">
+            <p className="error-text">{locationError}</p>
+            <p className="error-hint">위치 권한을 허용해주세요.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <div className="app-container">
+        {view !== 'results' && <h1 className="app-title">WhatLunch</h1>}
+
+        {error && (
+          <div className="error-banner">
+            {error}
+          </div>
+        )}
+
+        {view === 'dashboard' && (
+          <Dashboard
+            location={location}
+            radius={radius}
+            count={count}
+            onRadiusChange={setRadius}
+            onCountChange={setCount}
+            onRecommend={handleRecommend}
+          />
+        )}
+
+        {view === 'loading' && <Loading />}
+
+        {view === 'results' && (
+          <Results
+            restaurants={restaurants}
+            onRetry={handleRecommend}
+            onBack={handleBack}
+          />
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
