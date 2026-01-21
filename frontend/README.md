@@ -1,16 +1,79 @@
-# React + Vite
+# WhatLunch
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+오늘 점심 뭐 먹지? 결정 피로 없이 바로 추천받자!
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- GPS 기반 현재 위치 파악
+- 카카오 로컬 API로 주변 음식점 검색
+- 랜덤 추천 (1~10개, 기본 3개)
+- 거리 설정 (100m~1km 슬라이더)
+- 무제한 재추천 기능
+- 카카오맵 장소 페이지 연결
+- 네이버 블로그 검색 URL 연결
+- 로딩 중 팁 표시
+- PWA 설치 지원
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [Bun](https://bun.sh/) installed
+- Kakao Developers account with API keys
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Install dependencies:
+
+```bash
+bun install
+```
+
+2. Create `.env` file from the example:
+
+```bash
+cp .env.example .env
+```
+
+3. Get your Kakao API keys from [Kakao Developers](https://developers.kakao.com/):
+   - Create an application
+   - Add `Web` platform with your domain
+   - Copy the REST API Key and JavaScript Key
+   - Update `.env` with your keys
+
+```env
+VITE_KAKAO_REST_API_KEY=your_rest_api_key
+VITE_KAKAO_JS_KEY=your_javascript_key
+```
+
+## Development
+
+```bash
+bun run dev
+```
+
+## Build
+
+```bash
+bun run build
+```
+
+## Docker Deployment
+
+1. Create `.env` file in the project root with your Kakao API keys
+
+2. Build and run with Docker Compose:
+
+```bash
+docker-compose up -d --build
+```
+
+The app will be available at `http://localhost:8080`
+
+## Tech Stack
+
+- React 19
+- Vite 7
+- Bun
+- Kakao Maps SDK
+- Kakao Local API
+- PWA with Service Worker
+- Docker + nginx
