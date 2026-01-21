@@ -52,21 +52,14 @@ export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocatio
     mapStateRef.current = { map: newMap, marker: newMarker };
   }, [isLoaded, latitude, longitude, updateLocation]);
 
-  if (error) {
-    return (
-      <div className="mini-map-container">
-        <div className="mini-map mini-map-error">
-          <p>지도를 불러올 수 없습니다</p>
-        </div>
-      </div>
-    );
-  }
+  if (error || !isLoaded) {
+    const stateClass = error ? 'mini-map-error' : 'mini-map-loading';
+    const message = error ? '지도를 불러올 수 없습니다' : '지도 로딩중...';
 
-  if (!isLoaded) {
     return (
       <div className="mini-map-container">
-        <div className="mini-map mini-map-loading">
-          <p>지도 로딩중...</p>
+        <div className={`mini-map ${stateClass}`}>
+          <p>{message}</p>
         </div>
       </div>
     );

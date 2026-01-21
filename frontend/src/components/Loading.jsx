@@ -9,19 +9,18 @@ const FOOD_CARDS = [
   { emoji: '🍣', bg: '#E5FFE5' },
 ];
 
+const FLYER_COUNT = FOOD_CARDS.length;
+
 function Flyer({ index }) {
-  const food = FOOD_CARDS[index % FOOD_CARDS.length];
-  const delay = index * 0.3;
-  const duration = 1.5 + Math.random() * 0.5;
-  const startX = (Math.random() - 0.5) * 200;
+  const food = FOOD_CARDS[index];
 
   return (
     <div
       className="flyer"
       style={{
-        '--delay': `${delay}s`,
-        '--duration': `${duration}s`,
-        '--start-x': `${startX}px`,
+        '--delay': `${index * 0.3}s`,
+        '--duration': `${1.5 + Math.random() * 0.5}s`,
+        '--start-x': `${(Math.random() - 0.5) * 200}px`,
         backgroundColor: food.bg,
       }}
     >
@@ -34,11 +33,10 @@ export function Loading() {
   return (
     <div className="loading">
       <div className="flyer-container">
-        {[...Array(6)].map((_, i) => (
+        {Array.from({ length: FLYER_COUNT }, (_, i) => (
           <Flyer key={i} index={i} />
         ))}
       </div>
-
       <p className="loading-status">근처 식당 찾는 중...</p>
     </div>
   );

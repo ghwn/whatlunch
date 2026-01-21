@@ -1,31 +1,26 @@
 import { getNaverBlogSearchUrl } from '../api/kakaoLocal';
 import './RestaurantCard.css';
 
+const LINK_PROPS = {
+  target: '_blank',
+  rel: 'noopener noreferrer',
+};
+
 export function RestaurantCard({ restaurant, index }) {
-  const blogUrl = getNaverBlogSearchUrl(restaurant.place_name);
+  const { place_name, place_url, distance } = restaurant;
 
   return (
     <div className="restaurant-card">
       <div className="restaurant-info">
         <span className="restaurant-index">{index + 1}.</span>
-        <span className="restaurant-name">{restaurant.place_name}</span>
-        <span className="restaurant-distance">{restaurant.distance}m</span>
+        <span className="restaurant-name">{place_name}</span>
+        <span className="restaurant-distance">{distance}m</span>
       </div>
       <div className="restaurant-actions">
-        <a
-          href={restaurant.place_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="action-button map-button"
-        >
+        <a href={place_url} {...LINK_PROPS} className="action-button map-button">
           지도
         </a>
-        <a
-          href={blogUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="action-button blog-button"
-        >
+        <a href={getNaverBlogSearchUrl(place_name)} {...LINK_PROPS} className="action-button blog-button">
           블로그 후기
         </a>
       </div>

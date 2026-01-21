@@ -5,17 +5,18 @@ import { searchRestaurants, getRandomRestaurants } from './api/kakaoLocal';
 import { Dashboard, Results, Loading } from './components';
 import './App.css';
 
+const MIN_LOADING_TIME = 2500;
+
 function App() {
   const { location: currentLocation, error: locationError, loading: locationLoading } = useGeolocation();
   const [radius, setRadius] = useLocalStorage('whatlunch_radius', 500);
   const [count, setCount] = useLocalStorage('whatlunch_count', 3);
 
-  const [view, setView] = useState('dashboard'); // 'dashboard' | 'loading' | 'results'
+  const [view, setView] = useState('dashboard');
   const [restaurants, setRestaurants] = useState([]);
   const [error, setError] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
-  // 실제 사용할 위치 (선택된 위치가 있으면 선택된 위치, 아니면 현재 위치)
   const location = selectedLocation || currentLocation;
   const isCustomLocation = selectedLocation !== null;
 
@@ -33,8 +34,6 @@ function App() {
     setView('loading');
     setError(null);
 
-    const MIN_LOADING_TIME = 2500; // 전단지 애니메이션을 위한 최소 로딩 시간
-
     try {
       const [allRestaurants] = await Promise.all([
         searchRestaurants(location.longitude, location.latitude, radius),
@@ -47,8 +46,7 @@ function App() {
         return;
       }
 
-      const selected = getRandomRestaurants(allRestaurants, count);
-      setRestaurants(selected);
+      setRestaurants(getRandomRestaurants(allRestaurants, count));
       setView('results');
     } catch (err) {
       console.error('Failed to fetch restaurants:', err);
@@ -57,31 +55,24 @@ function App() {
     }
   }, [location, radius, count]);
 
-  const handleBack = () => {
-    setView('dashboard');
-  };
+  const handleBack = () => setView('dashboard');
 
-  if (locationLoading) {
+  if (locationLoading || locationError) {
     return (
       <div className="app">
         <div className="app-container">
           <h1 className="app-title">WhatLunch</h1>
-          <Loading />
-          <p className="status-text">위치를 확인하는 중...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (locationError) {
-    return (
-      <div className="app">
-        <div className="app-container">
-          <h1 className="app-title">WhatLunch</h1>
-          <div className="error-container">
-            <p className="error-text">{locationError}</p>
-            <p className="error-hint">위치 권한을 허용해주세요.</p>
-          </div>
+          {locationLoading ? (
+            <>
+              <Loading />
+              <p className="status-text">위치를 확인하는 중...</p>
+            </>
+          ) : (
+            <div className="error-container">
+              <p className="error-text">{locationError}</p>
+              <p className="error-hint">위치 권한을 허용해주세요.</p>
+            </div>
+          )}
         </div>
       </div>
     );

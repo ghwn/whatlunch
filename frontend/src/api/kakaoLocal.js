@@ -1,18 +1,14 @@
 const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
+const MAX_PAGES = 3;
 
-// 카테고리 검색 (음식점)
-async function searchByCategory(longitude, latitude, radius) {
+async function fetchKakaoSearch(endpoint, params) {
   const results = [];
-  const maxPages = 3;
 
-  for (let page = 1; page <= maxPages; page++) {
-    const url = new URL('https://dapi.kakao.com/v2/local/search/category.json');
-    url.searchParams.set('category_group_code', 'FD6');
-    url.searchParams.set('x', longitude.toString());
-    url.searchParams.set('y', latitude.toString());
-    url.searchParams.set('radius', radius.toString());
-    url.searchParams.set('size', '15');
-    url.searchParams.set('page', page.toString());
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const url = new URL(`https://dapi.kakao.com/v2/local/search/${endpoint}.json`);
+    Object.entries({ ...params, size: '15', page: page.toString() }).forEach(
+      ([key, value]) => url.searchParams.set(key, value)
+    );
 
     const response = await fetch(url.toString(), {
       headers: { Authorization: `KakaoAK ${KAKAO_REST_API_KEY}` },
@@ -29,33 +25,22 @@ async function searchByCategory(longitude, latitude, radius) {
   return results;
 }
 
-// 키워드 검색
-async function searchByKeyword(keyword, longitude, latitude, radius) {
-  const results = [];
-  const maxPages = 3;
+function searchByCategory(longitude, latitude, radius) {
+  return fetchKakaoSearch('category', {
+    category_group_code: 'FD6',
+    x: longitude.toString(),
+    y: latitude.toString(),
+    radius: radius.toString(),
+  });
+}
 
-  for (let page = 1; page <= maxPages; page++) {
-    const url = new URL('https://dapi.kakao.com/v2/local/search/keyword.json');
-    url.searchParams.set('query', keyword);
-    url.searchParams.set('x', longitude.toString());
-    url.searchParams.set('y', latitude.toString());
-    url.searchParams.set('radius', radius.toString());
-    url.searchParams.set('size', '15');
-    url.searchParams.set('page', page.toString());
-
-    const response = await fetch(url.toString(), {
-      headers: { Authorization: `KakaoAK ${KAKAO_REST_API_KEY}` },
-    });
-
-    if (!response.ok) throw new Error(`Kakao API error: ${response.status}`);
-
-    const data = await response.json();
-    results.push(...data.documents);
-
-    if (data.meta.is_end) break;
-  }
-
-  return results;
+function searchByKeyword(keyword, longitude, latitude, radius) {
+  return fetchKakaoSearch('keyword', {
+    query: keyword,
+    x: longitude.toString(),
+    y: latitude.toString(),
+    radius: radius.toString(),
+  });
 }
 
 export async function searchRestaurants(longitude, latitude, radius = 500) {
