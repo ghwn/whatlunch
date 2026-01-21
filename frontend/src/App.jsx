@@ -6,13 +6,26 @@ import { Dashboard, Results, Loading } from './components';
 import './App.css';
 
 function App() {
-  const { location, error: locationError, loading: locationLoading } = useGeolocation();
+  const { location: currentLocation, error: locationError, loading: locationLoading } = useGeolocation();
   const [radius, setRadius] = useLocalStorage('whatlunch_radius', 500);
   const [count, setCount] = useLocalStorage('whatlunch_count', 3);
 
   const [view, setView] = useState('dashboard'); // 'dashboard' | 'loading' | 'results'
   const [restaurants, setRestaurants] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  // 실제 사용할 위치 (선택된 위치가 있으면 선택된 위치, 아니면 현재 위치)
+  const location = selectedLocation || currentLocation;
+  const isCustomLocation = selectedLocation !== null;
+
+  const handleLocationChange = useCallback((newLocation) => {
+    setSelectedLocation(newLocation);
+  }, []);
+
+  const handleResetLocation = useCallback(() => {
+    setSelectedLocation(null);
+  }, []);
 
   const handleRecommend = useCallback(async () => {
     if (!location) return;
@@ -93,6 +106,9 @@ function App() {
             onRadiusChange={setRadius}
             onCountChange={setCount}
             onRecommend={handleRecommend}
+            onLocationChange={handleLocationChange}
+            isCustomLocation={isCustomLocation}
+            onResetLocation={handleResetLocation}
           />
         )}
 

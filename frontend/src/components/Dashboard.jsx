@@ -9,6 +9,9 @@ export function Dashboard({
   onRadiusChange,
   onCountChange,
   onRecommend,
+  onLocationChange,
+  isCustomLocation,
+  onResetLocation,
 }) {
   const formatRadius = (value) => {
     if (value >= 1000) {
@@ -22,7 +25,13 @@ export function Dashboard({
   return (
     <div className="dashboard">
       {location && (
-        <MiniMap latitude={location.latitude} longitude={location.longitude} />
+        <MiniMap
+          latitude={location.latitude}
+          longitude={location.longitude}
+          onLocationChange={onLocationChange}
+          isCustomLocation={isCustomLocation}
+          onReset={onResetLocation}
+        />
       )}
 
       <div className="settings">

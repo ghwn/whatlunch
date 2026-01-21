@@ -54,3 +54,32 @@
   box-shadow: var(--shadow-sm);
   z-index: 3;
 }
+
+.location-badge-custom {
+  background: var(--yellow-primary);
+  border-color: var(--yellow-dark);
+  color: var(--color-text);
+}
+
+.reset-location-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: var(--bg-paper);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-family: var(--font-fun);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--red-primary);
+  border: 2px solid var(--red-primary);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  z-index: 3;
+  transition: all 0.2s ease;
+}
+
+.reset-location-btn:hover {
+  background: var(--red-primary);
+  color: var(--bg-paper);
+}
