@@ -14,7 +14,7 @@ function loadKakaoMapsScript() {
     }
 
     const script = document.createElement('script');
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false`;
     script.async = true;
 
     script.onload = () => {
