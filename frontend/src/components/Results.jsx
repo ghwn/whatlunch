@@ -6,7 +6,7 @@ export function Results({ restaurants, onRetry, onBack }) {
     <div className="results">
       <div className="results-header">
         <button className="back-button" onClick={onBack}>
-          ← 돌아가기
+          돌아가기
         </button>
         <h2 className="results-title">오늘의 추천</h2>
       </div>

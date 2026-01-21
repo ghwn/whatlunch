@@ -20,12 +20,13 @@ function App() {
     setView('loading');
     setError(null);
 
+    const MIN_LOADING_TIME = 2500; // 전단지 애니메이션을 위한 최소 로딩 시간
+
     try {
-      const allRestaurants = await searchRestaurants(
-        location.longitude,
-        location.latitude,
-        radius
-      );
+      const [allRestaurants] = await Promise.all([
+        searchRestaurants(location.longitude, location.latitude, radius),
+        new Promise(resolve => setTimeout(resolve, MIN_LOADING_TIME))
+      ]);
 
       if (allRestaurants.length === 0) {
         setError('주변에 음식점이 없습니다. 거리를 늘려보세요.');
