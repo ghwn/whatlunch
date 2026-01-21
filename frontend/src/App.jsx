@@ -43,9 +43,9 @@ function App() {
     }
   }, [location, radius, count]);
 
-  const handleBack = useCallback(() => {
+  const handleBack = () => {
     setView('dashboard');
-  }, []);
+  };
 
   if (locationLoading) {
     return (

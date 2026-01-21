@@ -35,12 +35,9 @@ function loadKakaoMapsScript() {
 
 export function useKakaoMaps() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(() => {
-    if (!KAKAO_JS_KEY) {
-      return 'Kakao JS API key is not configured';
-    }
-    return null;
-  });
+  const [error, setError] = useState(
+    KAKAO_JS_KEY ? null : 'Kakao JS API key is not configured'
+  );
 
   useEffect(() => {
     if (!KAKAO_JS_KEY) return;

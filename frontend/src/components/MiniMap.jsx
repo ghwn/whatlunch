@@ -3,38 +3,34 @@ import { useKakaoMaps } from '../hooks/useKakaoMaps';
 import './MiniMap.css';
 
 export function MiniMap({ latitude, longitude }) {
-  const mapRef = useRef(null);
-  const mapInstanceRef = useRef(null);
-  const markerRef = useRef(null);
-  const initializedRef = useRef(false);
+  const containerRef = useRef(null);
+  const mapStateRef = useRef({ map: null, marker: null });
   const { isLoaded, error } = useKakaoMaps();
 
   useEffect(() => {
-    if (!isLoaded || !mapRef.current || initializedRef.current) return;
+    if (!isLoaded || !containerRef.current) return;
 
-    const container = mapRef.current;
-    const options = {
-      center: new window.kakao.maps.LatLng(latitude, longitude),
+    const { map, marker } = mapStateRef.current;
+    const position = new window.kakao.maps.LatLng(latitude, longitude);
+
+    if (map && marker) {
+      map.setCenter(position);
+      marker.setPosition(position);
+      return;
+    }
+
+    const newMap = new window.kakao.maps.Map(containerRef.current, {
+      center: position,
       level: 4,
-    };
-
-    mapInstanceRef.current = new window.kakao.maps.Map(container, options);
-
-    markerRef.current = new window.kakao.maps.Marker({
-      position: new window.kakao.maps.LatLng(latitude, longitude),
-      map: mapInstanceRef.current,
     });
 
-    initializedRef.current = true;
-  }, [isLoaded, latitude, longitude]);
+    const newMarker = new window.kakao.maps.Marker({
+      position,
+      map: newMap,
+    });
 
-  useEffect(() => {
-    if (mapInstanceRef.current && markerRef.current && initializedRef.current) {
-      const newPosition = new window.kakao.maps.LatLng(latitude, longitude);
-      mapInstanceRef.current.setCenter(newPosition);
-      markerRef.current.setPosition(newPosition);
-    }
-  }, [latitude, longitude]);
+    mapStateRef.current = { map: newMap, marker: newMarker };
+  }, [isLoaded, latitude, longitude]);
 
   if (error) {
     return (
@@ -58,7 +54,7 @@ export function MiniMap({ latitude, longitude }) {
 
   return (
     <div className="mini-map-container">
-      <div ref={mapRef} className="mini-map"></div>
+      <div ref={containerRef} className="mini-map"></div>
       <div className="location-badge">현재 위치</div>
     </div>
   );
