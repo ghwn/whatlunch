@@ -1,7 +1,7 @@
 import httpx
 from pydantic import BaseModel
 
-from settings import settings
+from config import settings
 
 
 class NaverSearchLocalResponse(BaseModel):
