@@ -1,23 +1,21 @@
-import './Slider.css';
-
 export function Slider({ label, value, min, max, step, onChange, formatValue }) {
   const displayValue = formatValue ? formatValue(value) : value;
   const fillPercent = ((value - min) / (max - min)) * 100;
 
   return (
-    <div className="slider-container">
-      <div className="slider-header">
-        <span className="slider-label">{label}</span>
-        <span className="slider-value">{displayValue}</span>
+    <div className="w-full">
+      <div className="flex justify-between items-center mb-2">
+        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">{label}</label>
+        <span className="text-sm font-bold text-orange-500">{displayValue}</span>
       </div>
-      <div className="slider-track">
+      <div className="relative w-full h-2 bg-gray-100 rounded-full overflow-hidden">
         <div
-          className="slider-fill"
+          className="absolute left-0 top-0 h-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-full transition-all duration-150"
           style={{ width: `${fillPercent}%` }}
         />
         <input
           type="range"
-          className="slider"
+          className="absolute w-full h-full top-0 left-0 opacity-0 cursor-pointer"
           min={min}
           max={max}
           step={step}

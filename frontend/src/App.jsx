@@ -3,7 +3,6 @@ import { useGeolocation } from './hooks/useGeolocation';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { searchRestaurants, getRandomRestaurants } from './api/kakaoLocal';
 import { Dashboard, Results, Loading } from './components';
-import './App.css';
 
 const MIN_LOADING_TIME = 2500;
 
@@ -59,36 +58,79 @@ function App() {
 
   if (locationLoading || locationError) {
     return (
-      <div className="app">
-        <div className="app-container">
-          <h1 className="app-title">WhatLunch</h1>
+      <div className="min-h-screen bg-[#fafafa] flex flex-col items-center p-4 sm:p-6">
+        <header className="w-full max-w-4xl flex justify-center items-center py-3 sm:py-6 mb-2 sm:mb-6">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white shadow-lg">
+              <i className="fas fa-utensils"></i>
+            </div>
+            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">WhatLunch</h1>
+          </div>
+        </header>
+        <main className="w-full max-w-4xl flex-1 flex flex-col items-center justify-center">
           {locationLoading ? (
-            <>
+            <div className="text-center space-y-6">
               <Loading />
-              <p className="status-text">위치를 확인하는 중...</p>
-            </>
+              <p className="text-gray-500 font-medium">위치를 확인하는 중...</p>
+            </div>
           ) : (
-            <div className="error-container">
-              <p className="error-text">{locationError}</p>
-              <p className="error-hint">위치 권한을 허용해주세요.</p>
+            <div className="card-animate bg-white rounded-3xl p-8 shadow-lg border border-gray-100 text-center max-w-md">
+              <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="fas fa-location-crosshairs text-red-500 text-2xl"></i>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">위치 권한 필요</h3>
+              <p className="text-gray-500 mb-4">{locationError}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-3 bg-orange-500 text-white rounded-xl font-bold hover:bg-orange-600 transition-all"
+              >
+                다시 시도
+              </button>
             </div>
           )}
-        </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="app">
-      <div className="app-container">
-        {view !== 'results' && <h1 className="app-title">WhatLunch</h1>}
-
-        {error && (
-          <div className="error-banner">
-            {error}
+    <div className="min-h-screen bg-[#fafafa] flex flex-col items-center p-4 sm:p-6">
+      {/* Header */}
+      <header className="w-full max-w-4xl flex justify-between items-center py-3 sm:py-6 mb-2 sm:mb-6">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={handleBack}>
+          <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white shadow-lg">
+            <i className="fas fa-utensils"></i>
           </div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">WhatLunch</h1>
+        </div>
+        {view === 'results' && (
+          <button
+            onClick={handleBack}
+            className="text-gray-400 hover:text-gray-900 transition-colors text-sm font-bold flex items-center gap-2"
+          >
+            <i className="fas fa-home"></i>
+            <span className="hidden sm:inline">홈으로</span>
+          </button>
         )}
+      </header>
 
+      {/* Error Banner */}
+      {error && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-red-50 border border-red-100 p-4 rounded-2xl flex items-start gap-3 shadow-lg z-50 card-animate">
+          <i className="fas fa-exclamation-circle text-red-500 mt-1"></i>
+          <div className="flex-1">
+            <p className="text-sm font-bold text-red-700">{error}</p>
+            <button
+              onClick={() => setError(null)}
+              className="text-xs font-bold text-red-600 underline mt-1"
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
+
+      <main className="w-full max-w-4xl flex-1 flex flex-col items-center justify-center">
         {view === 'dashboard' && (
           <Dashboard
             location={location}
@@ -112,7 +154,7 @@ function App() {
             onBack={handleBack}
           />
         )}
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,63 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 * {
   box-sizing: border-box;
 }
 
 :root {
-  /* Colors - 먹자골목 전단지 Theme */
-  --bg-cream: #FFF9F0;
-  --bg-paper: #FFFFFF;
-  --bg-yellow: #FFF4CC;
-
-  --red-primary: #E51937;
-  --red-dark: #C41230;
-  --yellow-primary: #FFD700;
-  --yellow-light: #FFEC80;
-  --black: #1A1A1A;
-  --gray-dark: #4A4A4A;
-  --gray-medium: #888888;
-  --gray-light: #E0E0E0;
-
-  /* Semantic colors */
-  --color-primary: var(--red-primary);
-  --color-secondary: var(--yellow-primary);
-  --color-text: var(--black);
-  --color-text-muted: var(--gray-medium);
-
-  /* Typography */
-  --font-display: 'Black Han Sans', 'Jua', sans-serif;
-  --font-body: 'Noto Sans KR', sans-serif;
-  --font-fun: 'Jua', 'Black Han Sans', sans-serif;
-
-  /* Spacing */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 3rem;
-
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-
-  /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
-
-  /* Transitions */
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-
-  font-family: var(--font-body);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: var(--color-text);
-  background-color: var(--bg-cream);
+  color: #1f2937;
+  background-color: #fafafa;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -68,7 +20,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: var(--bg-cream);
+  background: #fafafa;
 }
 
 #root {
@@ -87,41 +39,72 @@ button {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-family: var(--font-display);
 }
 
 p {
   margin: 0;
 }
 
-/* Utility animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px) rotate(-1deg); }
-  75% { transform: translateX(4px) rotate(1deg); }
+/* Button shadow effect */
+.btn-shadow {
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3), 0 4px 6px -4px rgba(249, 115, 22, 0.2);
 }
 
-@keyframes pop {
-  0% { transform: scale(0.8); opacity: 0; }
-  50% { transform: scale(1.05); }
+/* Card animation */
+.card-animate {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse animation for button */
+.pulse-orange {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.02); opacity: 0.9; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes flutter {
-  0% { transform: translateY(-100vh) rotate(0deg); }
-  25% { transform: translateY(-75vh) rotate(15deg) translateX(20px); }
-  50% { transform: translateY(-50vh) rotate(-10deg) translateX(-15px); }
-  75% { transform: translateY(-25vh) rotate(8deg) translateX(10px); }
-  100% { transform: translateY(0) rotate(-3deg) translateX(0); }
+/* Hide scrollbar */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-@keyframes land {
-  0% { transform: scale(1.1) rotate(-3deg); }
-  50% { transform: scale(0.95) rotate(1deg); }
-  100% { transform: scale(1) rotate(0deg); }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Spin animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+  50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
 }

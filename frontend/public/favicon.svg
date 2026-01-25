@@ -1,25 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- 노란 배경 -->
-  <rect width="100" height="100" rx="16" fill="#FFD700"/>
+  <!-- 오렌지 배경 -->
+  <rect width="100" height="100" rx="20" fill="#f97316"/>
 
-  <!-- 빨간 테두리 효과 -->
-  <rect x="4" y="4" width="92" height="92" rx="12" fill="none" stroke="#E51937" stroke-width="4" stroke-dasharray="8 4"/>
+  <!-- 포크와 나이프 아이콘 -->
+  <g fill="white">
+    <!-- 포크 -->
+    <path d="M35 20 L35 45 L37 45 L37 75 C37 78 40 80 43 80 C46 80 49 78 49 75 L49 45 L51 45 L51 20 L47 20 L47 35 L45 35 L45 20 L41 20 L41 35 L39 35 L39 20 Z"/>
 
-  <!-- 밥그릇 -->
-  <ellipse cx="50" cy="62" rx="28" ry="12" fill="#E51937"/>
-  <path d="M22 55 Q22 72 50 72 Q78 72 78 55 L78 62 Q78 78 50 78 Q22 78 22 62 Z" fill="#E51937"/>
-
-  <!-- 밥 -->
-  <ellipse cx="50" cy="55" rx="26" ry="10" fill="white"/>
-
-  <!-- 김가루 점들 -->
-  <circle cx="42" cy="53" r="2" fill="#333"/>
-  <circle cx="55" cy="55" r="1.5" fill="#333"/>
-  <circle cx="48" cy="57" r="1.5" fill="#333"/>
-  <circle cx="60" cy="53" r="1" fill="#333"/>
-
-  <!-- 김이 모락모락 -->
-  <path d="M38 42 Q36 36 40 32" stroke="#E51937" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
-  <path d="M50 40 Q48 34 52 28" stroke="#E51937" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
-  <path d="M62 42 Q60 36 64 32" stroke="#E51937" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <!-- 나이프 -->
+    <path d="M55 20 C55 20 53 35 53 50 C53 55 56 58 60 58 L60 75 C60 78 63 80 66 80 C69 80 72 78 72 75 L72 20 C72 20 63 20 63 35 C63 42 60 45 60 50 L60 20 Z"/>
+  </g>
 </svg>

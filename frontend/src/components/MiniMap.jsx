@@ -1,6 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useKakaoMaps } from '../hooks/useKakaoMaps';
-import './MiniMap.css';
 
 export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocation, onReset }) {
   const containerRef = useRef(null);
@@ -36,13 +35,11 @@ export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocatio
       draggable: true,
     });
 
-    // 마커 드래그 종료 시 위치 업데이트
     window.kakao.maps.event.addListener(newMarker, 'dragend', () => {
       const pos = newMarker.getPosition();
       updateLocation(pos.getLat(), pos.getLng());
     });
 
-    // 지도 클릭 시 마커 이동 및 위치 업데이트
     window.kakao.maps.event.addListener(newMap, 'click', (mouseEvent) => {
       const pos = mouseEvent.latLng;
       newMarker.setPosition(pos);
@@ -53,29 +50,55 @@ export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocatio
   }, [isLoaded, latitude, longitude, updateLocation]);
 
   if (error || !isLoaded) {
-    const stateClass = error ? 'mini-map-error' : 'mini-map-loading';
-    const message = error ? '지도를 불러올 수 없습니다' : '지도 로딩중...';
-
     return (
-      <div className="mini-map-container">
-        <div className={`mini-map ${stateClass}`}>
-          <p>{message}</p>
+      <div className="relative w-full rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
+        <div className="w-full aspect-[3/2] flex flex-col items-center justify-center gap-2 bg-gray-50">
+          {error ? (
+            <>
+              <i className="fas fa-map-marked-alt text-3xl text-red-400"></i>
+              <p className="text-sm text-red-500 font-medium">지도를 불러올 수 없습니다</p>
+            </>
+          ) : (
+            <>
+              <i className="fas fa-location-dot text-3xl text-orange-400 animate-bounce"></i>
+              <p className="text-sm text-gray-500 font-medium">지도 로딩중...</p>
+            </>
+          )}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mini-map-container">
-      <div ref={containerRef} className="mini-map"></div>
-      <div className={`location-badge ${isCustomLocation ? 'location-badge-custom' : ''}`}>
+    <div className="relative w-full rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
+      <div ref={containerRef} className="w-full aspect-[3/2]"></div>
+
+      {/* Location Badge */}
+      <div className={`absolute bottom-3 left-3 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm z-10 ${
+        isCustomLocation
+          ? 'bg-orange-500 text-white'
+          : 'bg-white text-gray-700 border border-gray-200'
+      }`}>
+        <i className={`fas fa-location-dot mr-1 ${isCustomLocation ? 'text-white' : 'text-orange-500'}`}></i>
         {isCustomLocation ? '선택한 위치' : '현재 위치'}
       </div>
+
+      {/* Reset Button */}
       {isCustomLocation && onReset && (
-        <button className="reset-location-btn" onClick={onReset} type="button">
+        <button
+          onClick={onReset}
+          type="button"
+          className="absolute bottom-3 right-3 px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-orange-500 border border-orange-200 hover:bg-orange-50 transition-all shadow-sm z-10"
+        >
+          <i className="fas fa-crosshairs mr-1"></i>
           현재 위치로
         </button>
       )}
+
+      {/* Hint Text */}
+      <div className="absolute top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-black/60 backdrop-blur-sm text-white text-[10px] font-medium rounded-full z-10">
+        지도를 클릭하여 위치 변경
+      </div>
     </div>
   );
 }

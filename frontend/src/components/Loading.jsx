@@ -1,43 +1,37 @@
-import './Loading.css';
+import { useState, useEffect } from 'react';
 
-const FOOD_CARDS = [
-  { emoji: '🍛', bg: '#FFF4CC' },
-  { emoji: '🍔', bg: '#FFE5E5' },
-  { emoji: '🍜', bg: '#E5F4FF' },
-  { emoji: '🍕', bg: '#FFE5F4' },
-  { emoji: '🥓', bg: '#FFF0E5' },
-  { emoji: '🍣', bg: '#E5FFE5' },
+const MESSAGES = [
+  "주변 맛집 찾는 중...",
+  "리뷰 분석 중...",
+  "메뉴 확인 중...",
+  "최적의 조합 계산 중...",
+  "거의 다 됐어요!",
 ];
 
-const FLYER_COUNT = FOOD_CARDS.length;
-
-function Flyer({ index }) {
-  const food = FOOD_CARDS[index];
-
-  return (
-    <div
-      className="flyer"
-      style={{
-        '--delay': `${index * 0.3}s`,
-        '--duration': `${1.5 + Math.random() * 0.5}s`,
-        '--start-x': `${(Math.random() - 0.5) * 200}px`,
-        backgroundColor: food.bg,
-      }}
-    >
-      <span className="flyer-emoji">{food.emoji}</span>
-    </div>
-  );
-}
-
 export function Loading() {
+  const [msgIndex, setMsgIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMsgIndex((prev) => (prev + 1) % MESSAGES.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="loading">
-      <div className="flyer-container">
-        {Array.from({ length: FLYER_COUNT }, (_, i) => (
-          <Flyer key={i} index={i} />
-        ))}
+    <div className="flex flex-col items-center justify-center p-12 text-center space-y-8 min-h-[400px]">
+      <div className="relative">
+        <div className="w-24 h-24 border-4 border-orange-100 border-t-orange-500 rounded-full animate-spin"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-orange-500">
+          <i className="fas fa-utensils text-2xl animate-bounce"></i>
+        </div>
       </div>
-      <p className="loading-status">근처 식당 찾는 중...</p>
+      <div className="space-y-2">
+        <h3 className="text-xl font-bold text-gray-800 transition-all duration-500">
+          {MESSAGES[msgIndex]}
+        </h3>
+        <p className="text-gray-500 text-sm">잠시만 기다려주세요</p>
+      </div>
     </div>
   );
 }
