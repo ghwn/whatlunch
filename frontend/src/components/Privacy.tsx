@@ -54,7 +54,6 @@ export function Privacy({ onBack }: PrivacyProps) {
 
           {/* 문의 */}
           <section className="pt-4 border-t border-gray-100">
-            <p className="text-xs text-gray-400">문의: ghwn5936@gmail.com</p>
             <p className="text-xs text-gray-400 mt-1">시행일: 2026년 1월 25일</p>
           </section>
         </div>
