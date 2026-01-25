@@ -1,81 +1,42 @@
-.app {
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  justify-content: center;
-  padding: var(--space-md);
-  background: var(--bg-cream);
-}
-
-.app-container {
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-md);
-}
-
-.app-title {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-weight: 900;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
   text-align: center;
-  margin: 0 0 var(--space-lg) 0;
-  color: var(--red-primary);
-  text-shadow:
-    2px 2px 0 var(--yellow-primary),
-    4px 4px 0 rgba(0, 0, 0, 0.1);
-  letter-spacing: -1px;
 }
 
-.app-subtitle {
-  font-family: var(--font-fun);
-  font-size: 1rem;
-  color: var(--gray-dark);
-  text-align: center;
-  margin-top: calc(var(--space-sm) * -1);
-  margin-bottom: var(--space-lg);
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.status-text {
-  text-align: center;
-  color: var(--color-text-muted);
-  font-size: 0.95rem;
-  padding: var(--space-xl);
-  background: var(--bg-paper);
-  border-radius: var(--radius-lg);
-  border: 2px dashed var(--gray-light);
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.error-container {
-  text-align: center;
-  padding: var(--space-xl);
-  background: var(--bg-paper);
-  border-radius: var(--radius-lg);
-  border: 2px dashed var(--red-primary);
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
 
-.error-text {
-  color: var(--red-primary);
-  font-weight: 600;
-  margin-bottom: var(--space-sm);
-  font-size: 1.1rem;
+.card {
+  padding: 2em;
 }
 
-.error-hint {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-}
-
-.error-banner {
-  background: #FFF0F0;
-  color: var(--red-primary);
-  padding: var(--space-md) var(--space-lg);
-  border-radius: var(--radius-md);
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: var(--space-md);
-  text-align: center;
-  border: 2px solid var(--red-primary);
-  animation: shake 0.5s ease;
+.read-the-docs {
+  color: #888;
 }
