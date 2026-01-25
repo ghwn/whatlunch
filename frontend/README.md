@@ -31,14 +31,10 @@ cp .env.example .env
 bun run dev
 ```
 
-## Build
-
-```bash
-bun run build
-```
-
 ## Deployment
 
 ```bash
+bun run install
+bun run build
 sudo rsync -av --delete ./dist/ /var/www/whatlunch/
 ```
