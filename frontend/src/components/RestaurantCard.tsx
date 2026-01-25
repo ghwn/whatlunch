@@ -60,7 +60,7 @@ export function RestaurantCard({ restaurant, index }: RestaurantCardProps) {
         <a
           href={place_url}
           {...LINK_PROPS}
-          className="flex-1 bg-gray-900 text-white px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-95 text-sm"
+          className="flex-1 bg-gray-900 !text-white px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-95 text-sm"
         >
           <i className="fas fa-map-location-dot"></i>
           지도 보기
