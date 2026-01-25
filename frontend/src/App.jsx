@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useGeolocation } from './hooks/useGeolocation';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { searchRestaurants, getRandomRestaurants } from './api/kakaoLocal';
-import { Dashboard, Results, Loading } from './components';
+import { Dashboard, Results, Loading, Privacy } from './components';
 
 const MIN_LOADING_TIME = 2500;
 
@@ -154,7 +154,21 @@ function App() {
             onBack={handleBack}
           />
         )}
+
+        {view === 'privacy' && (
+          <Privacy onBack={handleBack} />
+        )}
       </main>
+
+      {/* Footer - Privacy Link */}
+      <footer className="w-full max-w-4xl py-4 text-center">
+        <button
+          onClick={() => setView('privacy')}
+          className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          개인정보 처리방침
+        </button>
+      </footer>
     </div>
   );
 }
