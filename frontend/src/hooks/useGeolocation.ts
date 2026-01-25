@@ -1,25 +1,26 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
+import type { Location, GeolocationState } from "../types";
 
-const GEOLOCATION_OPTIONS = {
+const GEOLOCATION_OPTIONS: PositionOptions = {
   enableHighAccuracy: true,
   timeout: 10000,
   maximumAge: 60000,
 };
 
-const ERROR_MESSAGES = {
-  1: 'Location permission denied',
-  2: 'Location information unavailable',
-  3: 'Location request timed out',
+const ERROR_MESSAGES: Record<number, string> = {
+  1: "Location permission denied",
+  2: "Location information unavailable",
+  3: "Location request timed out",
 };
 
-export function useGeolocation() {
-  const [location, setLocation] = useState(null);
-  const [error, setError] = useState(null);
+export function useGeolocation(): GeolocationState {
+  const [location, setLocation] = useState<Location | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchLocation = useCallback(() => {
     if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
+      setError("Geolocation is not supported by your browser");
       setLoading(false);
       return;
     }
@@ -36,7 +37,7 @@ export function useGeolocation() {
         setLoading(false);
       },
       (err) => {
-        setError(ERROR_MESSAGES[err.code] || 'An unknown error occurred');
+        setError(ERROR_MESSAGES[err.code] || "An unknown error occurred");
         setLoading(false);
       },
       GEOLOCATION_OPTIONS

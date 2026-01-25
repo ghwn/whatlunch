@@ -1,4 +1,8 @@
-export function Privacy({ onBack }) {
+interface PrivacyProps {
+  onBack: () => void;
+}
+
+export function Privacy({ onBack }: PrivacyProps) {
   return (
     <div className="w-full max-w-lg mx-auto">
       <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
@@ -34,8 +38,8 @@ export function Privacy({ onBack }) {
           <section>
             <h3 className="font-bold text-gray-900 mb-2">보관 및 파기</h3>
             <p className="text-gray-500">
-              위치 정보는 일회성으로 사용 후 즉시 폐기됩니다.
-              페이지를 벗어나면 모든 정보가 사라집니다.
+              위치 정보는 일회성으로 사용 후 즉시 폐기됩니다. 페이지를 벗어나면
+              모든 정보가 사라집니다.
             </p>
           </section>
 
@@ -43,19 +47,15 @@ export function Privacy({ onBack }) {
           <section>
             <h3 className="font-bold text-gray-900 mb-2">제3자 제공</h3>
             <p className="text-gray-500">
-              위치 정보는 카카오 로컬 API를 통한 음식점 검색에만 사용됩니다.
-              그 외 제3자에게 정보를 제공하지 않습니다.
+              위치 정보는 카카오 로컬 API를 통한 음식점 검색에만 사용됩니다. 그
+              외 제3자에게 정보를 제공하지 않습니다.
             </p>
           </section>
 
           {/* 문의 */}
           <section className="pt-4 border-t border-gray-100">
-            <p className="text-xs text-gray-400">
-              문의: ghwn5936@gmail.com
-            </p>
-            <p className="text-xs text-gray-400 mt-1">
-              시행일: 2026년 1월 25일
-            </p>
+            <p className="text-xs text-gray-400">문의: ghwn5936@gmail.com</p>
+            <p className="text-xs text-gray-400 mt-1">시행일: 2026년 1월 25일</p>
           </section>
         </div>
 

@@ -1,16 +1,39 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { useKakaoMaps } from '../hooks/useKakaoMaps';
+import { useEffect, useRef, useCallback } from "react";
+import { useKakaoMaps } from "../hooks/useKakaoMaps";
+import type { Location } from "../types";
 
-export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocation, onReset }) {
-  const containerRef = useRef(null);
-  const mapStateRef = useRef({ map: null, marker: null });
+interface MiniMapProps {
+  latitude: number;
+  longitude: number;
+  onLocationChange?: (location: Location) => void;
+  isCustomLocation: boolean;
+  onReset?: () => void;
+}
+
+interface MapState {
+  map: kakao.maps.Map | null;
+  marker: kakao.maps.Marker | null;
+}
+
+export function MiniMap({
+  latitude,
+  longitude,
+  onLocationChange,
+  isCustomLocation,
+  onReset,
+}: MiniMapProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mapStateRef = useRef<MapState>({ map: null, marker: null });
   const { isLoaded, error } = useKakaoMaps();
 
-  const updateLocation = useCallback((lat, lng) => {
-    if (onLocationChange) {
-      onLocationChange({ latitude: lat, longitude: lng });
-    }
-  }, [onLocationChange]);
+  const updateLocation = useCallback(
+    (lat: number, lng: number) => {
+      if (onLocationChange) {
+        onLocationChange({ latitude: lat, longitude: lng });
+      }
+    },
+    [onLocationChange]
+  );
 
   useEffect(() => {
     if (!isLoaded || !containerRef.current) return;
@@ -35,16 +58,20 @@ export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocatio
       draggable: true,
     });
 
-    window.kakao.maps.event.addListener(newMarker, 'dragend', () => {
+    window.kakao.maps.event.addListener(newMarker, "dragend", () => {
       const pos = newMarker.getPosition();
       updateLocation(pos.getLat(), pos.getLng());
     });
 
-    window.kakao.maps.event.addListener(newMap, 'click', (mouseEvent) => {
-      const pos = mouseEvent.latLng;
-      newMarker.setPosition(pos);
-      updateLocation(pos.getLat(), pos.getLng());
-    });
+    window.kakao.maps.event.addListener(
+      newMap,
+      "click",
+      (mouseEvent: { latLng: kakao.maps.LatLng }) => {
+        const pos = mouseEvent.latLng;
+        newMarker.setPosition(pos);
+        updateLocation(pos.getLat(), pos.getLng());
+      }
+    );
 
     mapStateRef.current = { map: newMap, marker: newMarker };
   }, [isLoaded, latitude, longitude, updateLocation]);
@@ -56,7 +83,9 @@ export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocatio
           {error ? (
             <>
               <i className="fas fa-map-marked-alt text-3xl text-red-400"></i>
-              <p className="text-sm text-red-500 font-medium">지도를 불러올 수 없습니다</p>
+              <p className="text-sm text-red-500 font-medium">
+                지도를 불러올 수 없습니다
+              </p>
             </>
           ) : (
             <>
@@ -74,13 +103,19 @@ export function MiniMap({ latitude, longitude, onLocationChange, isCustomLocatio
       <div ref={containerRef} className="w-full aspect-[3/2]"></div>
 
       {/* Location Badge */}
-      <div className={`absolute bottom-3 left-3 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm z-10 ${
-        isCustomLocation
-          ? 'bg-orange-500 text-white'
-          : 'bg-white text-gray-700 border border-gray-200'
-      }`}>
-        <i className={`fas fa-location-dot mr-1 ${isCustomLocation ? 'text-white' : 'text-orange-500'}`}></i>
-        {isCustomLocation ? '선택한 위치' : '현재 위치'}
+      <div
+        className={`absolute bottom-3 left-3 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm z-10 ${
+          isCustomLocation
+            ? "bg-orange-500 text-white"
+            : "bg-white text-gray-700 border border-gray-200"
+        }`}
+      >
+        <i
+          className={`fas fa-location-dot mr-1 ${
+            isCustomLocation ? "text-white" : "text-orange-500"
+          }`}
+        ></i>
+        {isCustomLocation ? "선택한 위치" : "현재 위치"}
       </div>
 
       {/* Reset Button */}

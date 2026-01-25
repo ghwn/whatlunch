@@ -1,6 +1,13 @@
-import { RestaurantCard } from './RestaurantCard';
+import { RestaurantCard } from "./RestaurantCard";
+import type { Restaurant } from "../types";
 
-export function Results({ restaurants, onRetry, onBack }) {
+interface ResultsProps {
+  restaurants: Restaurant[];
+  onRetry: () => void;
+  onBack: () => void;
+}
+
+export function Results({ restaurants, onRetry, onBack }: ResultsProps) {
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6 card-animate">
       {/* Header */}

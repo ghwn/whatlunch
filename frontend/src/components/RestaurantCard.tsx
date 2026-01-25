@@ -1,16 +1,29 @@
-import { getNaverBlogSearchUrl } from '../api/kakaoLocal';
+import { getNaverBlogSearchUrl } from "../api/kakaoLocal";
+import type { Restaurant } from "../types";
 
 const LINK_PROPS = {
-  target: '_blank',
-  rel: 'noopener noreferrer',
-};
+  target: "_blank",
+  rel: "noopener noreferrer",
+} as const;
 
-export function RestaurantCard({ restaurant, index }) {
-  const { place_name, place_url, distance, category_name, road_address_name, address_name } = restaurant;
+interface RestaurantCardProps {
+  restaurant: Restaurant;
+  index: number;
+}
+
+export function RestaurantCard({ restaurant, index }: RestaurantCardProps) {
+  const {
+    place_name,
+    place_url,
+    distance,
+    category_name,
+    road_address_name,
+    address_name,
+  } = restaurant;
 
   // Extract cuisine type from category
-  const cuisine = category_name?.split(' > ').pop() || '음식점';
-  const address = road_address_name || address_name || '';
+  const cuisine = category_name?.split(" > ").pop() || "음식점";
+  const address = road_address_name || address_name || "";
 
   return (
     <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">

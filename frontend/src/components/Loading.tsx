@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const MESSAGES = [
   "주변 맛집 찾는 중...",

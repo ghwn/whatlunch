@@ -1,4 +1,4 @@
-export const lunchTips = [
+export const lunchTips: string[] = [
   "점심 후 10분 산책은 소화에 좋아요",
   "오늘 날씨가 추우니 따뜻한 국물은 어때요?",
   "새로운 맛집 도전은 화요일이 좋대요",
@@ -13,7 +13,7 @@ export const lunchTips = [
   "리뷰보다 직접 가보는 게 최고예요",
 ];
 
-export function getRandomTip() {
+export function getRandomTip(): string {
   const index = Math.floor(Math.random() * lunchTips.length);
   return lunchTips[index];
 }

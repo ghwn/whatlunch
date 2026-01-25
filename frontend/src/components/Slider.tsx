@@ -1,11 +1,31 @@
-export function Slider({ label, value, min, max, step, onChange, formatValue }) {
-  const displayValue = formatValue ? formatValue(value) : value;
+interface SliderProps {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (value: number) => void;
+  formatValue?: (value: number) => string;
+}
+
+export function Slider({
+  label,
+  value,
+  min,
+  max,
+  step,
+  onChange,
+  formatValue,
+}: SliderProps) {
+  const displayValue = formatValue ? formatValue(value) : String(value);
   const fillPercent = ((value - min) / (max - min)) * 100;
 
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-2">
-        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">{label}</label>
+        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+          {label}
+        </label>
         <span className="text-sm font-bold text-orange-500">{displayValue}</span>
       </div>
       <div className="relative w-full h-2 bg-gray-100 rounded-full overflow-hidden">

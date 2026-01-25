@@ -1,6 +1,19 @@
-import { useState } from 'react';
-import { MiniMap } from './MiniMap';
-import { Slider } from './Slider';
+import { useState } from "react";
+import { MiniMap } from "./MiniMap";
+import { Slider } from "./Slider";
+import type { Location } from "../types";
+
+interface DashboardProps {
+  location: Location;
+  radius: number;
+  count: number;
+  onRadiusChange: (value: number) => void;
+  onCountChange: (value: number) => void;
+  onRecommend: () => void;
+  onLocationChange: (location: Location) => void;
+  isCustomLocation: boolean;
+  onResetLocation: () => void;
+}
 
 export function Dashboard({
   location,
@@ -12,17 +25,17 @@ export function Dashboard({
   onLocationChange,
   isCustomLocation,
   onResetLocation,
-}) {
+}: DashboardProps) {
   const [showSettings, setShowSettings] = useState(false);
 
-  const formatRadius = (value) => {
+  const formatRadius = (value: number): string => {
     if (value >= 1000) {
       return `${(value / 1000).toFixed(1)}km`;
     }
     return `${value}m`;
   };
 
-  const formatCount = (value) => `${value}개`;
+  const formatCount = (value: number): string => `${value}개`;
 
   return (
     <div className="text-center space-y-4 sm:space-y-8 max-w-xl w-full">
@@ -63,7 +76,11 @@ export function Dashboard({
             onClick={() => setShowSettings(!showSettings)}
             className="text-gray-400 hover:text-gray-600 font-bold text-sm flex items-center gap-2 mx-auto mb-4"
           >
-            <i className={`fas fa-sliders-h transition-transform ${showSettings ? 'rotate-90' : ''}`}></i>
+            <i
+              className={`fas fa-sliders-h transition-transform ${
+                showSettings ? "rotate-90" : ""
+              }`}
+            ></i>
             설정 변경
           </button>
 
